@@ -1,0 +1,27 @@
+#include "stdlib.fc"; 
+
+(int) load_data() inline{
+    var ds = get_data().begin_parse();
+    return (ds~load_uint(64));
+}
+
+() save_data(int counter) impure inline{
+    set_data(begin_cell().store_uint(counter, 64).end_cell());
+}
+
+;; сообщение
+
+() recv_internal(int msg_value, cell in_msg_full, slice in_msg_body) impure {
+     int operatinType = in_msg_body~load_uint(32);
+     var (counter) = load_data();
+     if (operationType == 1){
+        save_data(counter + 1);
+     }
+}
+
+;; геттеры
+
+int counter() method_id {   ;; method_id устанавливает хэш ид для гед метода как аналог имени метода для вызова  
+    var (counter) = load_data();
+    return counter;
+}
