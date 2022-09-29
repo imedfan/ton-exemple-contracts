@@ -1,18 +1,18 @@
 #include "stdlib.fc"; 
 
-(int) load_data() inline{
+(int) load_data() inline {
     var ds = get_data().begin_parse();
     return (ds~load_uint(64));
 }
 
-() save_data(int counter) impure inline{
+() save_data(int counter) impure inline {
     set_data(begin_cell().store_uint(counter, 64).end_cell());
 }
 
 ;; сообщение
 
 () recv_internal(int msg_value, cell in_msg_full, slice in_msg_body) impure {
-     int operatinType = in_msg_body~load_uint(32);
+     int operationType = in_msg_body~load_uint(32);
      var (counter) = load_data();
      if (operationType == 1){
         save_data(counter + 1);
